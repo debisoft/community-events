@@ -100,7 +100,7 @@ def weights_init_normal(m):
         torch.nn.init.constant_(m.bias.data, 0.0)
 
 def training_function(config, args):
-    accelerator = Accelerator(fp16=args.fp16, cpu=args.cpu, mixed_precision=args.mixed_precision)
+    accelerator = Accelerator(cpu=args.cpu, mixed_precision=args.mixed_precision)
 
     os.makedirs("images/%s" % args.dataset, exist_ok=True)
     os.makedirs("saved_models/%s" % args.dataset, exist_ok=True)

@@ -149,10 +149,17 @@ def training_function(config, args):
         # random vertical flip
         imagesA = []
         imagesB = []
-        for imageA, imageB in zip(examples['imageA'], examples['imageB']):
-            if np.random.random() < 0.5:
-                imageA = Image.fromarray(np.array(imageA)[:, ::-1, :], "RGB")
-                imageB = Image.fromarray(np.array(imageB)[:, ::-1, :], "RGB")
+        #for imageA, imageB in zip(examples['imageA'], examples['imageB']):
+        for imageAB in zip(examples['image']):
+            #img_AB = Image.fromarray(np.array(imageAB)[:, ::-1, :], "RGB")
+            img_AB = imageAB[0]
+            #print(img_AB)
+            w, h = img_AB.size
+            imageA = img_AB.crop((0, 0, w / 2, h))
+            imageB = img_AB.crop((w / 2, 0, w, h))
+            #if np.random.random() < 0.5:
+                #imageA = Image.fromarray(np.array(imageA)[:, ::-1, :], "RGB")
+                #imageB = Image.fromarray(np.array(imageB)[:, ::-1, :], "RGB")
             imagesA.append(imageA)
             imagesB.append(imageB)  
         
@@ -160,8 +167,8 @@ def training_function(config, args):
         examples["A"] = [transform(image.convert("RGB")) for image in imagesA]
         examples["B"] = [transform(image.convert("RGB")) for image in imagesB]
 
-        del examples["imageA"]
-        del examples["imageB"]
+        del examples["image"]
+        #del examples["imageB"]
 
         return examples
 
